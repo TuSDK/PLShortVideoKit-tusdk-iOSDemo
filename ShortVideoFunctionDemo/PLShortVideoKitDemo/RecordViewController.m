@@ -19,6 +19,8 @@
 #import "PLSRateButtonView.h"
 #import "PLScreenRecorderManager.h"
 
+#import "TTLiveMediator.h"
+#import "TTViewManager.h"
 
 #define PLS_CLOSE_CONTROLLER_ALERTVIEW_TAG 10001
 #define PLS_BaseToolboxView_HEIGHT 64
@@ -422,6 +424,10 @@ PLScreenRecorderManagerDelegate
     self.recordToolboxView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.recordToolboxView];
 
+    //涂图设置
+    [[TTLiveMediator shareInstance] setPixelFormat:TTVideoPixelFormat_BGRA];
+    [[TTViewManager shareInstance] setBeautyTarget:[TTBeautyProxy transformObjc:[TTLiveMediator shareInstance]]];
+    [[TTViewManager shareInstance] setupSuperView:self.view];
     
     // 倍速拍摄
     self.titleArray = @[@"极慢", @"慢", @"正常", @"快", @"极快"];
@@ -935,6 +941,7 @@ PLScreenRecorderManagerDelegate
             pixelBuffer = [self.filterGroup.currentFilter process:pixelBuffer];
         }
     }
+    pixelBuffer = [[[TTLiveMediator shareInstance] sendVideoPixelBuffer:pixelBuffer] getCVPixelBuffer];
     
     return pixelBuffer;
 }
@@ -1132,6 +1139,9 @@ PLScreenRecorderManagerDelegate
     }
     
     NSLog(@"dealloc: %@", [[self class] description]);
+    
+    [[TTLiveMediator shareInstance] destory];
+    [[TTViewManager shareInstance] destory];
 }
 
 #pragma mark -- UICollectionView delegate  用来展示和处理 SDK 内部自带的滤镜效果

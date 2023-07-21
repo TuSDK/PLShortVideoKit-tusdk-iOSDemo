@@ -12,6 +12,7 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "PLShortVideoKit/PLShortVideoKit.h"
+#import "TTLiveMediator.h"
 
 @interface AppDelegate ()
 
@@ -27,6 +28,9 @@
     [PLShortVideoKitEnv setLogLevel:PLShortVideoLogLevelDebug];
     [PLShortVideoKitEnv enableFileLogging];
 
+    // 初始化涂图
+    [TTLiveMediator setupWithAppKey:@"1d37400e00a3356e-04-ewdjn1"];
+    
     // crash 收集
     [Fabric with:@[[Crashlytics class]]];
      AVAudioSessionCategoryOptions options = AVAudioSessionCategoryOptionDefaultToSpeaker |  AVAudioSessionCategoryOptionAllowBluetooth;
@@ -67,6 +71,10 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    
+    //涂图资源销毁
+    [[TTLiveMediator shareInstance] destory];
+    
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
