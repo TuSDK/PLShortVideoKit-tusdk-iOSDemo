@@ -142,6 +142,11 @@ PLScreenRecorderManagerDelegate
     // 通过手势切换滤镜
     [self setupGestureRecognizer];
     
+    //涂图设置
+    [[TTLiveMediator shareInstance] setPixelFormat:TTVideoPixelFormat_BGRA];
+    [[TTViewManager shareInstance] setBeautyTarget:[TTBeautyProxy transformObjc:[TTLiveMediator shareInstance]]];
+    [[TTViewManager shareInstance] setupSuperView:self.view];
+    
     // --------------------------
 }
 
@@ -424,10 +429,7 @@ PLScreenRecorderManagerDelegate
     self.recordToolboxView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.recordToolboxView];
 
-    //涂图设置
-    [[TTLiveMediator shareInstance] setPixelFormat:TTVideoPixelFormat_BGRA];
-    [[TTViewManager shareInstance] setBeautyTarget:[TTBeautyProxy transformObjc:[TTLiveMediator shareInstance]]];
-    [[TTViewManager shareInstance] setupSuperView:self.view];
+    
     
     // 倍速拍摄
     self.titleArray = @[@"极慢", @"慢", @"正常", @"快", @"极快"];

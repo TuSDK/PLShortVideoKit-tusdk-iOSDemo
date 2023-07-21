@@ -36,6 +36,10 @@
 
 #import "PLSClipMovieView.h"    // 剪辑视图
 
+#import "TTViewManager.h"
+#import "TTLiveMediator.h"
+#import "TTFilterPanelView.h"   //涂图滤镜视图
+
 #define PLS_BaseToolboxView_HEIGHT 64
 #define PLS_EditToolboxView_HEIGHT 50
 
@@ -180,6 +184,9 @@ PLSClipMovieViewDelegate
 // 视频合成的进度
 @property (nonatomic, strong) UILabel *progressLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+
+/// 滤镜视图
+@property (nonatomic, strong) TTFilterPanelView *filterPanelView;
 
 @end
 
@@ -558,6 +565,14 @@ PLSClipMovieViewDelegate
     button = [self toolBoxButtonWithSelector:@selector(videoListButtonEvent:)
                                       startX:button.frame.origin.x + button.frame.size.width + 20
                                        title:@"列表"];
+    // 涂图特效
+//    button = [self toolBoxButtonWithSelector:@selector(videoListButtonEvent:)
+//                                      startX:button.frame.origin.x + button.frame.size.width + 20
+//                                       title:@"涂图特效"];
+    // 涂图滤镜
+    button = [self toolBoxButtonWithSelector:@selector(clickTuSDKFilterBtn:)
+                                      startX:button.frame.origin.x + button.frame.size.width + 20
+                                       title:@"涂图滤镜"];
     
     // 更新 buttonScrollView 的 contentSize
     self.buttonScrollView.contentSize = CGSizeMake(button.frame.origin.x + button.frame.size.width + 20, self.buttonScrollView.frame.size.height);
@@ -591,6 +606,8 @@ PLSClipMovieViewDelegate
     [self hideSourceCollectionView];
     // 隐藏视频列表视图
     [self removeVideoListView];
+    // 隐藏涂图特效
+    [self hiddenTuSDKFilterView];
 }
 
 // self.tapGes 手势的响应事件
@@ -642,6 +659,32 @@ PLSClipMovieViewDelegate
         [self.shortVideoEditor startEditing];
         self.playButton.selected = NO;
     }
+}
+
+#pragma mark - 涂图特效
+- (void)clickTuSDKFilterBtn:(UIButton *)button;
+{
+    [self showTuSDKFilterView];
+}
+//涂图滤镜
+- (void)showTuSDKFilterView
+{
+    [self hideAllBottomViews];
+    
+    if (!_filterPanelView) {
+        CGFloat filterPanelHeight = 246;
+        self.filterPanelView = [TTFilterPanelView beautyPanelWithFrame:CGRectMake(0, PLS_SCREEN_HEIGHT - PLS_EditToolboxView_HEIGHT - filterPanelHeight - [self bottomFixSpace], PLS_SCREEN_WIDTH, filterPanelHeight) beautyTarget:[TTBeautyProxy transformObjc:[TTLiveMediator shareInstance]]];
+        [self.view addSubview:self.filterPanelView];
+    }
+    if (!_filterPanelView) {
+        [self.view addSubview:self.filterPanelView];
+    }
+    self.filterPanelView.hidden = NO;
+}
+
+- (void)hiddenTuSDKFilterView
+{
+    self.filterPanelView.hidden = YES;
 }
 
 #pragma mark - 滤镜、多音效、音乐、MV、视频倍速资源数组获取
@@ -952,6 +995,11 @@ PLSClipMovieViewDelegate
         return NO;
     }
     
+    // 过滤掉 TTFilterPanelView，让 TTFilterPanelView 响应它自身的点击事件
+    if ([classArray containsObject:NSStringFromClass(TTFilterPanelView.class)]) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -982,6 +1030,7 @@ PLSClipMovieViewDelegate
             });
         }
     }
+    
     
     // 多音效
     if (self.selectionViewIndex == 4 && self.currentSelectedIndexPath.row != 0) {
@@ -1023,6 +1072,9 @@ PLSClipMovieViewDelegate
             } while (0);
         });
     }
+    
+    //添加涂图特效
+    tempPixelBuffer = [[[TTLiveMediator shareInstance] sendVideoPixelBuffer:tempPixelBuffer] getCVPixelBuffer];
     
     return tempPixelBuffer;
 }

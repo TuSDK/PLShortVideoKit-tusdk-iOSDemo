@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TTImageConvert : NSObject
 
+
 /// 向 SDK 发送采集的视频数据 返回图像
 /// @param pixelBuffer 视频样本
 - (TUPFPImage *)sendPixelBuffer:(CVPixelBufferRef)pixelBuffer;

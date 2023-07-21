@@ -2204,15 +2204,15 @@
 		A653CBF32A6A2F5000A1F345 /* TTBeauty */ = {
 			isa = PBXGroup;
 			children = (
-				A653CBF42A6A2F5000A1F345 /* TTRenderDef.m */,
-				A653CBF52A6A2F5000A1F345 /* TTLiveMediator.h */,
-				A653CBF62A6A2F5000A1F345 /* TTImageConvert.m */,
-				A653CBF72A6A2F5000A1F345 /* TTBeautyManager.m */,
 				A653CBF82A6A2F5000A1F345 /* Common */,
-				A653CBFD2A6A2F5000A1F345 /* TTRenderDef.h */,
 				A653CBFE2A6A2F5000A1F345 /* TTBeautyManager.h */,
+				A653CBF72A6A2F5000A1F345 /* TTBeautyManager.m */,
 				A653CBFF2A6A2F5000A1F345 /* TTImageConvert.h */,
+				A653CBF62A6A2F5000A1F345 /* TTImageConvert.m */,
+				A653CBF52A6A2F5000A1F345 /* TTLiveMediator.h */,
 				A653CC002A6A2F5000A1F345 /* TTLiveMediator.m */,
+				A653CBFD2A6A2F5000A1F345 /* TTRenderDef.h */,
+				A653CBF42A6A2F5000A1F345 /* TTRenderDef.m */,
 			);
 			path = TTBeauty;
 			sourceTree = "<group>";
@@ -2970,9 +2970,9 @@
 		A653CE2A2A6A2F5100A1F345 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
+				A653CE2D2A6A2F5100A1F345 /* TTFilterPanelView.h */,
 				A653CE2B2A6A2F5100A1F345 /* TTFilterPanelView.m */,
 				A653CE2C2A6A2F5100A1F345 /* TTFilterPanelViewCell.h */,
-				A653CE2D2A6A2F5100A1F345 /* TTFilterPanelView.h */,
 				A653CE2E2A6A2F5100A1F345 /* TTFilterPanelViewCell.m */,
 			);
 			path = Filter;
